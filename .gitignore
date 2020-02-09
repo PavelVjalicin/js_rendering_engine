@@ -2,3 +2,4 @@
 /.VSCodeCounter
 /target
 /node_modules
+/dist
