@@ -14,7 +14,7 @@ uniform mat4 mProj;
 void main() {
     fragColor = vertColor;
     gl_Position = mProj * mView * mModel * vec4(vertPosition,1.0);
-    positionZ = (gl_Position.z*0.3-2.2)*-1.0;
+    positionZ = gl_Position.z;
 }
 
 #shader
@@ -24,5 +24,5 @@ varying vec3 fragColor;
 varying float positionZ;
 
 void main() {
-   gl_FragColor = vec4(fragColor*positionZ, 1.0);
+   gl_FragColor = vec4(fragColor, 1.0);
 }

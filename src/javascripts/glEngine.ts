@@ -3,6 +3,8 @@ import { glMatrix, mat4 } from "gl-matrix";
 import { Shader } from "./shader";
 import { IndexBuffer, VertexBuffer, VertexBufferElement, VertexBufferLayout } from "./buffers";
 import { Renderer } from "./renderer";
+import { EntityManager } from "./entityManager";
+import { Box } from "./entities/box";
 
 class GlEngine {
 
@@ -15,6 +17,7 @@ class GlEngine {
     private ib:IndexBuffer
     private vb:VertexBuffer
     private vbl:VertexBufferLayout
+    private viewMatrix:mat4;
 
     constructor(gl:WebGLRenderingContext, 
         canvas:HTMLCanvasElement, 
@@ -25,35 +28,14 @@ class GlEngine {
             this.projMatrix = mat4.create()
             this.addOnResize()
             this.enableFrontFaceRendering(gl)
+            
+            EntityManager.resources = resources
+            
+            var buffers = EntityManager.entityBuffers(gl)
 
-            let box = resources.objects["Box"]
+            this.vb = buffers[0] as VertexBuffer
 
-            let vertices = multVerts(box.vertices,-2,0,0)
-
-            let vertices2 = multVerts(box.vertices,2,0,0)
-
-            let indices2 = box.indices.map(n => n+24)
-
-            function multVerts(verticesRef,x,y,z):Array<number> {
-                const vertices = [...verticesRef]
-                const size = 6
-                const rows = 24
-
-                for(var r =0;r<rows;r ++) {
-                    for(var xyz=0;xyz<3;xyz++){
-                        let value
-                        if(xyz == 0) value = x
-                        else if(xyz == 1) value = y
-                        else if(xyz == 2) value = z
-                        vertices[r*size+xyz] += value
-                    }
-                }
-                return vertices
-            }
-
-            this.vb = new VertexBuffer(gl,vertices.concat(vertices2))
-
-            this.ib = new IndexBuffer(gl,[...box.indices].concat(indices2))
+            this.ib = buffers[1] as IndexBuffer
 
             const vbElems = [
                 new VertexBufferElement(3,"vertPosition"),
@@ -65,11 +47,11 @@ class GlEngine {
             this.vbl.bind(this.shader)
 
             this.modelMatrix = mat4.create()
-            let viewMatrix = mat4.create()
+            this.viewMatrix = mat4.create()
             this.projMatrix = mat4.create()
 
             mat4.identity(this.modelMatrix)
-            mat4.lookAt(viewMatrix, [0, 0, -6], [0, 0, 0], [0, 1, 0])
+            mat4.lookAt(this.viewMatrix, [0, 0, 15], [0, 0, 0], [0, 1, 0])
             mat4.perspective(
                 this.projMatrix,
                 glMatrix.toRadian(45),
@@ -79,7 +61,7 @@ class GlEngine {
 
             this.shader.bind()
             this.shader.setUniformMat4fv("mModel",this.modelMatrix)
-            this.shader.setUniformMat4fv("mView",viewMatrix)
+            this.shader.setUniformMat4fv("mView",this.viewMatrix)
             this.shader.setUniformMat4fv("mProj",this.projMatrix)
 
             this.renderer =  new Renderer(gl)
@@ -113,7 +95,7 @@ class GlEngine {
         this.shader.setUniformMat4fv("mProj",this.projMatrix)
     }
 
-    onFrame(f:(mat4)=>void) {
+    onFrame(f:(modelMatrix)=>void) {
 
         let t = this
 
@@ -123,7 +105,8 @@ class GlEngine {
             t.shader.setUniformMat4fv("mModel",t.modelMatrix)
 
             t.renderer.clear()        
-            t.renderer.draw(t.vb,t.ib,t.vbl,t.shader)
+            var buffers = EntityManager.entityBuffers(t.gl)
+            t.renderer.draw(buffers[0] as VertexBuffer,buffers[1] as IndexBuffer,t.vbl,t.shader)
 
             requestAnimationFrame(loop);
         }

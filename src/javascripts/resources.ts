@@ -68,5 +68,7 @@ function loadResourcesPromise():Promise<Resources> {
 export {
     loadResourcesPromise,
     Resources,
-    Shaders
+    Shaders,
+    ObjectMetaData,
+    ObjectData
 } 

@@ -4,7 +4,11 @@ const keyCodes = {
     "37":"LEFT",
     "39":"RIGHT",
     "81":"Q",
-    "69":"E"
+    "69":"E",
+    "87":"W",
+    "83":"S",
+    "65":"A",
+    "68":"D"
 }
 
 class Inputs {
@@ -14,6 +18,10 @@ class Inputs {
     RIGHT = false
     Q = false
     E = false
+    W = false
+    A = false
+    S = false
+    D = false
 }
 
 function assignInputHandlers(canvas:HTMLCanvasElement):Inputs {
