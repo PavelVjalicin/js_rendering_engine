@@ -1,15 +1,16 @@
 import {  mat4, quat } from "gl-matrix";
-import { Resources } from "./resources";
+import { Resources } from "./engine/resources";
 import {Inputs} from "./inputs"
-import { GlEngine } from "./glEngine";
+import { GlEngine } from "./engine/glEngine";
 import { Box } from "./entities/box";
+import { Player } from "./player";
 
 function glApp( gl:WebGLRenderingContext, 
                 canvas:HTMLCanvasElement, 
                 inputs:Inputs, 
                 resources:Resources) {
 
-    let engine = new GlEngine(gl,canvas,resources)
+    let engine = new GlEngine(gl,canvas,resources,inputs)
 
     var zangle = 0
     var yangle = 0
@@ -23,28 +24,29 @@ function glApp( gl:WebGLRenderingContext,
     var quatAngles = quat.create()
     quat.fromEuler(quatAngles, xangle, yangle, zangle)
 
+    
 
+    var map = [
+        [0,0,0,0,0,0,0,0,0,1],
+        [0,0,0,0,0,0,0,0,0,1],
+        [0,0,1,1,1,1,0,0,1,1]
+    ]
 
+    var player = new Player(2,0,0,map)
 
-    var box1 = new Box(-2,0,0)
+    map.forEach((row,rowNum) => {
+        row.forEach( (tile,tileNum) => {
+            if(tile == 1) {
+                new Box(tileNum*2-4,-rowNum*2,0)
+            } else if(tile == 0) {
 
-    var box2 = new Box(2,0,0)
-
-    new Box(0,-2,0)
-
-    new Box(0,2,0)
+            }
+        })
+    })
 
     engine.onFrame(function (modelMatrix) {
-        if (inputs.LEFT) {
-            
-            box1.x -= 0.05
-        }
-
-        if(inputs.RIGHT) {
-            box1.x += 0.05
-        }
-        
-
+       
+        player.handleMovement()
         let acc = 0.1
         let friction = 0.95
         if (!(inputs.W || inputs.S || inputs.A || inputs.D || inputs.Q || inputs.E)) {

@@ -4,7 +4,7 @@ import { Shader } from "./shader";
 import { IndexBuffer, VertexBuffer, VertexBufferElement, VertexBufferLayout } from "./buffers";
 import { Renderer } from "./renderer";
 import { EntityManager } from "./entityManager";
-import { Box } from "./entities/box";
+import { Inputs } from "../inputs";
 
 class GlEngine {
 
@@ -21,7 +21,8 @@ class GlEngine {
 
     constructor(gl:WebGLRenderingContext, 
         canvas:HTMLCanvasElement, 
-        resources:Resources) {
+        resources:Resources,
+        inputs:Inputs) {
             this.gl = gl
             this.canvas = canvas
             this.shader = new Shader(gl,resources.shaders)
@@ -30,6 +31,7 @@ class GlEngine {
             this.enableFrontFaceRendering(gl)
             
             EntityManager.resources = resources
+            EntityManager.inputs = inputs
             
             var buffers = EntityManager.entityBuffers(gl)
 
@@ -51,7 +53,7 @@ class GlEngine {
             this.projMatrix = mat4.create()
 
             mat4.identity(this.modelMatrix)
-            mat4.lookAt(this.viewMatrix, [0, 0, 15], [0, 0, 0], [0, 1, 0])
+            mat4.lookAt(this.viewMatrix, [0, 0, 40], [0, 0, 0], [0, 1, 0])
             mat4.perspective(
                 this.projMatrix,
                 glMatrix.toRadian(45),

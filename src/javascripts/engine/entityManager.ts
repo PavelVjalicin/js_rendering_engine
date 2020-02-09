@@ -1,9 +1,11 @@
 import {Entity} from "./entity"
 import { Resources } from "./resources";
 import { VertexBuffer, IndexBuffer } from "./buffers";
+import { Inputs } from "../inputs";
 class EntityManager {
     private static entities:Array<Entity> = [];
     static resources:Resources
+    static inputs:Inputs
 
     static getModel(name:string) {
         return this.resources.objects[name];

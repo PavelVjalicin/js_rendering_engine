@@ -1,4 +1,4 @@
-import {glWindow} from "./glWindow"
+import {glWindow} from "./engine/glWindow"
 
 const socket = new WebSocket("ws://localhost:3000")
 

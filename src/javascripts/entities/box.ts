@@ -1,6 +1,6 @@
-import { Entity } from "../entity";
-import { ObjectData } from "../resources";
-import { EntityManager } from "../entityManager";
+import { Entity } from "../engine/entity";
+import { ObjectData } from "../engine/resources";
+import { EntityManager } from "../engine/entityManager";
 
 class Box extends Entity {
 

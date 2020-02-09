@@ -1,6 +1,6 @@
 import { loadResourcesPromise } from "./resources"
-import {glApp} from "./glApplication"
-import {assignInputHandlers} from "./inputs"
+import {glApp} from "../glApplication"
+import {assignInputHandlers} from "../inputs"
 
 function glWindow(canvas:HTMLCanvasElement) {
 
