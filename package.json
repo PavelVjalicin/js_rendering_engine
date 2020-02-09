@@ -1,0 +1,21 @@
+{
+  "name": "gulp-test",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "dev-build": "node dev-build.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/gl-matrix": "^2.4.5",
+    "express": "^4.17.1",
+    "express-ws": "^4.0.0",
+    "gl-matrix": "^3.0.0",
+    "ts-loader": "^6.0.4",
+    "typescript": "^3.5.2",
+    "webpack": "^4.35.2",
+    "webpack-cli": "^3.3.5"
+  }
+}
