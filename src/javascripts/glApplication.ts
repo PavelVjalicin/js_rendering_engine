@@ -27,12 +27,12 @@ function glApp( gl:WebGLRenderingContext,
     
 
     var map = [
-        [0,0,0,0,0,0,0,0,0,1],
-        [0,0,0,0,0,0,0,0,0,1],
-        [0,0,1,1,1,1,0,0,1,1]
+        [0,1,0,0,0,0,0,0,0,1],
+        [0,1,0,0,0,0,0,0,0,1],
+        [0,1,1,1,1,1,0,0,1,1]
     ]
 
-    var player = new Player(2,0,0,map)
+    var player = new Player(2,0,0,0.3,0.3,0.3,map)
 
     map.forEach((row,rowNum) => {
         row.forEach( (tile,tileNum) => {

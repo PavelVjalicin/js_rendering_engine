@@ -15,15 +15,19 @@ import { Box } from "./entities/box";
 import { EntityManager } from "./engine/entityManager";
 var Player = /** @class */ (function (_super) {
     __extends(Player, _super);
-    function Player(x, y, z, map) {
-        var _this = _super.call(this, x, y, z) || this;
+    function Player(x, y, z, sizeX, sizeY, sizeZ, map) {
+        var _this = _super.call(this, x, y, z, sizeX, sizeY, sizeZ) || this;
         _this.inputs = EntityManager.inputs;
         _this.ySpeed = 0;
         _this.gravity = 0.05;
         _this.grounded = true;
-        _this.speed = 0.25;
-        _this.sizeX = 1;
+        _this.speed = 0.1;
+        _this.sizeX = 0.5;
         _this.sizeY = 1;
+        _this.tileSizeX = 1;
+        _this.tileSizeY = 1;
+        _this.sizeX = sizeX;
+        _this.sizeY = sizeY;
         _this.map = map;
         return _this;
     }
@@ -53,14 +57,15 @@ var Player = /** @class */ (function (_super) {
         var location = this.getTileLocation();
         var xTile = location[0];
         var yTile = location[1];
-        var downTileOccupied = this.getMapTile(xTile, yTile + 1) != 0;
-        console.log(downTileOccupied);
+        var downTileOccupied = this.isDownTileOccupied();
         if (downTileOccupied) {
-            var tileOccupation = (this.sizeY / 2);
-            if (tileOccupation + moveY + (this.y % 1) > 0.5) {
-                this.grounded = true;
-                moveY = 0;
-                this.y = yTile + 0.5;
+            if (this.ySpeed < 0) {
+                var tileOccupation = (this.sizeY * 0.5);
+                if (tileOccupation + moveY + (this.y % 1) < 0.5) {
+                    this.grounded = true;
+                    moveY = 0;
+                    this.y = yTile * 2;
+                }
             }
         }
         else {
@@ -69,15 +74,27 @@ var Player = /** @class */ (function (_super) {
         this.x += moveX;
         this.y += moveY;
     };
+    Player.prototype.isDownTileOccupied = function () {
+        var location = this.getTileLocation();
+        var xTile = location[0];
+        var yTile = location[1];
+        var downTile = this.getMapTile(xTile, yTile + 1) != 0;
+        var relativePosition = ((this.x * 0.5 + 3) - xTile) - 1;
+        var downLeftTile = relativePosition + this.sizeX * 0.5 < 0 && this.getMapTile(xTile - 1, yTile + 1) != 0;
+        var downRightTile = relativePosition - this.sizeX * 0.5 > 0 && this.getMapTile(xTile + 1, yTile + 1) != 0;
+        console.log(relativePosition);
+        console.log(relativePosition + this.sizeX * 0.5);
+        return downLeftTile || downTile || downRightTile;
+    };
     Player.prototype.getMapTile = function (x, y) {
         var tile = 0;
-        if (this.map[-y] != undefined && this.map[-y + 2][x] != undefined) {
+        if (this.map[-y + 2] != undefined && this.map[-y + 2][x] != undefined) {
             tile = this.map[-y + 2][x];
         }
         return tile;
     };
     Player.prototype.getTileLocation = function () {
-        return [Math.round(this.x) + 4, Math.round(this.y - 1)];
+        return [Math.round(this.x * 0.5) + 2, Math.round(this.y * 0.5)];
     };
     return Player;
 }(Box));

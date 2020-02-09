@@ -15,8 +15,11 @@ import { Entity } from "../engine/entity";
 import { EntityManager } from "../engine/entityManager";
 var Box = /** @class */ (function (_super) {
     __extends(Box, _super);
-    function Box(x, y, z) {
-        return _super.call(this, x, y, z, EntityManager.getModel("Box")) || this;
+    function Box(x, y, z, scaleX, scaleY, scaleZ) {
+        if (scaleX === void 0) { scaleX = 1; }
+        if (scaleY === void 0) { scaleY = 1; }
+        if (scaleZ === void 0) { scaleZ = 1; }
+        return _super.call(this, x, y, z, scaleX, scaleY, scaleZ, EntityManager.getModel("Box")) || this;
     }
     return Box;
 }(Entity));

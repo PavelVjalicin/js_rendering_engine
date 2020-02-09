@@ -7,13 +7,15 @@ class Player extends Box {
     private gravity = 0.05;
     private grounded = true;
     private speed = 0.1;
-    private sizeX = 0.5;
-    private sizeY = 1;
+    private sizeX;
+    private sizeY;
     private tileSizeX = 1;
     private tileSizeY = 1;
     private map;
-    constructor(x,y,z,map) {
-        super(x,y,z)
+    constructor(x,y,z,sizeX,sizeY,sizeZ,map) {
+        super(x,y,z,sizeX,sizeY,sizeZ)
+        this.sizeX = sizeX
+        this.sizeY = sizeY
         this.map = map
     }
 
@@ -58,7 +60,7 @@ class Player extends Box {
                 if(tileOccupation + moveY + (this.y % 1) < 0.5) {
                     this.grounded = true
                     moveY = 0
-                    this.y = yTile * 2
+                    this.y = (yTile*2) - 1 + this.sizeY
                 } 
             }
             
@@ -77,12 +79,9 @@ class Player extends Box {
         
         let downTile = this.getMapTile(xTile,yTile+1) != 0  
         let relativePosition = ((this.x*0.5+3)-xTile) - 1
-        let downLeftTile = relativePosition+this.sizeX*0.5 < 0 && this.getMapTile(xTile-1,yTile+1) != 0  
-        let downRightTile = relativePosition-this.sizeX*0.5 > 0 && this.getMapTile(xTile+1,yTile+1) != 0  
-        
+        let downLeftTile = relativePosition < -this.sizeX && this.getMapTile(xTile-1,yTile+1) != 0  
+        let downRightTile = relativePosition > this.sizeX && this.getMapTile(xTile+1,yTile+1) != 0  
         console.log(relativePosition)
-        console.log(relativePosition+this.sizeX*0.5)
-
         return downLeftTile || downTile  || downRightTile  
     }
 

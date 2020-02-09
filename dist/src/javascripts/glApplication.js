@@ -13,15 +13,15 @@ function glApp(gl, canvas, inputs, resources) {
     var quatAngles = quat.create();
     quat.fromEuler(quatAngles, xangle, yangle, zangle);
     var map = [
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [0, 0, 1, 1, 1, 1, 0, 0, 1, 1]
     ];
     var player = new Player(2, 0, 0, map);
     map.forEach(function (row, rowNum) {
         row.forEach(function (tile, tileNum) {
             if (tile == 1) {
-                new Box(tileNum - 4, -rowNum, 0);
+                new Box(tileNum * 2 - 4, -rowNum * 2, 0);
             }
             else if (tile == 0) {
             }
