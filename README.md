@@ -1,5 +1,6 @@
 # JS Rendering Engine
 WebGL based JavaScript rendering engine.  
+Written in TypeScript.  
 Node, Express server used to serve shaders and objects.   
 Engine use-case: src/javascripts/glApplication.ts    
 
