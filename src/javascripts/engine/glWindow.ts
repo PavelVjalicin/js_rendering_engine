@@ -9,7 +9,7 @@ function glWindow(canvas:HTMLCanvasElement) {
     function getGL() {
         let gl = canvas.getContext("webgl")
         if (!gl) {
-            gl = canvas.getContext("experimental-webgl")
+            gl = <WebGLRenderingContext> canvas.getContext("experimental-webgl")
         }
 
         return gl;

@@ -2,7 +2,7 @@ import {Entity} from "./entity"
 import { Resources } from "./resources";
 import { VertexBuffer, IndexBuffer } from "./buffers";
 import { Inputs } from "../inputs";
-import { scale } from "gl-matrix/src/gl-matrix/vec4";
+
 class EntityManager {
     private static entities:Array<Entity> = [];
     static resources:Resources
